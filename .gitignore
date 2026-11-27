@@ -1,0 +1,8 @@
+target/
+out/
+*.class
+*.zip
+nbactions.xml
+nb-configuration.xml
+.idea/
+.vscode/
