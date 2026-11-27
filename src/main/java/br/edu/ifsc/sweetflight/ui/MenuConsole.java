@@ -42,6 +42,7 @@ public class MenuConsole {
         System.out.println("3 - Registrar venda");
         System.out.println("4 - Consultar vendas por voo");
         System.out.println("5 - Consultar vendas por passageiro");
+        System.out.println("6 - Cancelar venda");
         System.out.println("0 - Encerrar");
     }
 
@@ -53,6 +54,7 @@ public class MenuConsole {
             case "4" -> exibirVendas(central.consultarPorVoo(leitor.lerTexto("Código do voo")));
             case "5" -> exibirVendas(central.consultarPorPassageiro(
                     leitor.lerTexto("Código do passageiro")));
+            case "6" -> cancelarVenda();
             case "0" -> { }
             default -> System.out.println("Opção inválida.");
         }
@@ -104,5 +106,11 @@ public class MenuConsole {
         for (Venda venda : vendas) {
             exibirVenda(venda);
         }
+    }
+
+    private void cancelarVenda() {
+        Venda venda = central.cancelarVenda(leitor.lerTexto("Código da venda"));
+        System.out.println("Venda cancelada e vaga liberada:");
+        exibirVenda(venda);
     }
 }
