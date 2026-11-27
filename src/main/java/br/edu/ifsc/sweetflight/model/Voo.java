@@ -11,6 +11,7 @@ public class Voo {
     private final LocalDateTime partida;
     private final int capacidade;
     private final BigDecimal tarifa;
+    private int assentosOcupados;
 
     public Voo(String codigo, String origem, String destino, LocalDateTime partida,
             int capacidade, BigDecimal tarifa) {
@@ -44,5 +45,33 @@ public class Voo {
 
     public BigDecimal getTarifa() {
         return tarifa;
+    }
+
+    public int getAssentosOcupados() {
+        return assentosOcupados;
+    }
+
+    public int getAssentosDisponiveis() {
+        return capacidade - assentosOcupados;
+    }
+
+    public boolean temVaga() {
+        return getAssentosDisponiveis() > 0;
+    }
+
+    // Não existe setAssentosOcupados: a contagem só muda de um em um
+    // e nunca passa da capacidade nem fica negativa.
+    public void ocuparAssento() {
+        if (!temVaga()) {
+            throw new IllegalStateException("O voo " + codigo + " está lotado.");
+        }
+        assentosOcupados++;
+    }
+
+    public void liberarAssento() {
+        if (assentosOcupados == 0) {
+            throw new IllegalStateException("O voo " + codigo + " não tem assentos ocupados.");
+        }
+        assentosOcupados--;
     }
 }
