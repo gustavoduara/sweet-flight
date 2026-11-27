@@ -1,5 +1,8 @@
 package br.edu.ifsc.sweetflight.ui;
 
+import java.util.Locale;
+import java.math.BigDecimal;
+import br.edu.ifsc.sweetflight.model.Venda;
 import br.edu.ifsc.sweetflight.service.CentralVendas;
 import br.edu.ifsc.sweetflight.service.RegraNegocioException;
 import java.util.NoSuchElementException;
@@ -35,6 +38,7 @@ public class MenuConsole {
         System.out.println("=== SWEET FLIGHT - VENDA DE PASSAGENS ===");
         System.out.println("1 - Cadastrar voo");
         System.out.println("2 - Cadastrar passageiro");
+        System.out.println("3 - Registrar venda");
         System.out.println("0 - Encerrar");
     }
 
@@ -42,6 +46,7 @@ public class MenuConsole {
         switch (opcao) {
             case "1" -> cadastrarVoo();
             case "2" -> cadastrarPassageiro();
+            case "3" -> registrarVenda();
             case "0" -> { }
             default -> System.out.println("Opção inválida.");
         }
@@ -63,5 +68,26 @@ public class MenuConsole {
                 leitor.lerTexto("Código do passageiro"),
                 leitor.lerTexto("Nome completo"));
         System.out.println("Passageiro cadastrado.");
+    }
+
+    private void registrarVenda() {
+        Venda venda = central.registrarVenda(
+                leitor.lerTexto("Código do voo"),
+                leitor.lerTexto("Código do passageiro"));
+        System.out.println("Pagamento confirmado. Venda registrada:");
+        exibirVenda(venda);
+    }
+
+    private void exibirVenda(Venda venda) {
+        System.out.println("Venda " + venda.getCodigo()
+                + " | Voo " + venda.getVoo().getCodigo()
+                + " | Passageiro " + venda.getPassageiro().getCodigo()
+                + " - " + venda.getPassageiro().getNome()
+                + " | " + formatarValor(venda.getValor())
+                + " | " + venda.getSituacao());
+    }
+
+    private String formatarValor(BigDecimal valor) {
+        return String.format(Locale.forLanguageTag("pt-BR"), "R$ %,.2f", valor);
     }
 }
