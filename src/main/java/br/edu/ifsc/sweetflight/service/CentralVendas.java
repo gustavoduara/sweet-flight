@@ -68,6 +68,19 @@ public class CentralVendas {
         return venda;
     }
 
+    public Venda cancelarVenda(String codigoVenda) {
+        String chave = normalizarCodigo(codigoVenda);
+        Venda venda = vendas.get(chave);
+        if (venda == null) {
+            throw new RegraNegocioException("Venda " + chave + " não encontrada.");
+        }
+        if (!venda.isConfirmada()) {
+            throw new RegraNegocioException("A venda " + chave + " já está cancelada.");
+        }
+        venda.cancelar();
+        return venda;
+    }
+
     public List<Venda> consultarPorVoo(String codigoVoo) {
         Voo voo = buscarVoo(codigoVoo);
         List<Venda> resultado = new ArrayList<>();
