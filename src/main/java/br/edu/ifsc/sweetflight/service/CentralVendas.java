@@ -1,5 +1,6 @@
 package br.edu.ifsc.sweetflight.service;
 
+import br.edu.ifsc.sweetflight.model.Venda;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
 import br.edu.ifsc.sweetflight.model.Voo;
@@ -12,6 +13,8 @@ public class CentralVendas {
 
     private final Map<String, Voo> voos = new LinkedHashMap<>();
     private final Map<String, Passageiro> passageiros = new LinkedHashMap<>();
+    private final Map<String, Venda> vendas = new LinkedHashMap<>();
+    private int proximaVenda = 1;
 
     public Voo cadastrarVoo(String codigo, String origem, String destino, LocalDateTime partida,
             int capacidade, BigDecimal tarifa) {
@@ -45,6 +48,50 @@ public class CentralVendas {
         Passageiro passageiro = new Passageiro(chave, exigirTexto(nome, "nome"));
         passageiros.put(chave, passageiro);
         return passageiro;
+    }
+
+    public Venda registrarVenda(String codigoVoo, String codigoPassageiro) {
+        Voo voo = buscarVoo(codigoVoo);
+        Passageiro passageiro = buscarPassageiro(codigoPassageiro);
+        if (possuiVendaConfirmada(voo, passageiro)) {
+            throw new RegraNegocioException(passageiro.getNome()
+                    + " já tem uma venda confirmada no voo " + voo.getCodigo() + ".");
+        }
+        if (!voo.temVaga()) {
+            throw new RegraNegocioException("Não há vagas no voo " + voo.getCodigo() + ".");
+        }
+        String codigo = String.format("V%03d", proximaVenda++);
+        Venda venda = new Venda(codigo, voo, passageiro);
+        vendas.put(codigo, venda);
+        return venda;
+    }
+
+    public Voo buscarVoo(String codigo) {
+        String chave = normalizarCodigo(codigo);
+        Voo voo = voos.get(chave);
+        if (voo == null) {
+            throw new RegraNegocioException("Voo " + chave + " não cadastrado.");
+        }
+        return voo;
+    }
+
+    public Passageiro buscarPassageiro(String codigo) {
+        String chave = normalizarCodigo(codigo);
+        Passageiro passageiro = passageiros.get(chave);
+        if (passageiro == null) {
+            throw new RegraNegocioException("Passageiro " + chave + " não cadastrado.");
+        }
+        return passageiro;
+    }
+
+    private boolean possuiVendaConfirmada(Voo voo, Passageiro passageiro) {
+        for (Venda venda : vendas.values()) {
+            if (venda.isConfirmada() && venda.getVoo() == voo
+                    && venda.getPassageiro() == passageiro) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String normalizarCodigo(String codigo) {
