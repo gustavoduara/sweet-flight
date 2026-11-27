@@ -1,13 +1,13 @@
 package br.edu.ifsc.sweetflight.service;
 
-import java.util.List;
-import java.util.ArrayList;
-import br.edu.ifsc.sweetflight.model.Venda;
-import java.time.LocalDateTime;
-import java.math.BigDecimal;
-import br.edu.ifsc.sweetflight.model.Voo;
 import br.edu.ifsc.sweetflight.model.Passageiro;
+import br.edu.ifsc.sweetflight.model.Venda;
+import br.edu.ifsc.sweetflight.model.Voo;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Guarda os dados em memória e aplica as regras de negócio. */

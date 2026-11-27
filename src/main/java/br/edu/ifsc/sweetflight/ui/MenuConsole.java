@@ -1,13 +1,13 @@
 package br.edu.ifsc.sweetflight.ui;
 
-import br.edu.ifsc.sweetflight.service.ResumoVoo;
-import br.edu.ifsc.sweetflight.model.Voo;
-import java.util.List;
-import java.util.Locale;
-import java.math.BigDecimal;
 import br.edu.ifsc.sweetflight.model.Venda;
+import br.edu.ifsc.sweetflight.model.Voo;
 import br.edu.ifsc.sweetflight.service.CentralVendas;
 import br.edu.ifsc.sweetflight.service.RegraNegocioException;
+import br.edu.ifsc.sweetflight.service.ResumoVoo;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 
 /** Entrada e saída do console. As regras ficam na CentralVendas. */
