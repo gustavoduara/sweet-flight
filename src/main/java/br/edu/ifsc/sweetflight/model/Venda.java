@@ -43,4 +43,13 @@ public class Venda {
     public boolean isConfirmada() {
         return situacao == SituacaoVenda.CONFIRMADA;
     }
+
+    // A checagem da situação impede que a mesma vaga seja liberada duas vezes.
+    public void cancelar() {
+        if (!isConfirmada()) {
+            throw new IllegalStateException("A venda " + codigo + " já está cancelada.");
+        }
+        situacao = SituacaoVenda.CANCELADA;
+        voo.liberarAssento();
+    }
 }
