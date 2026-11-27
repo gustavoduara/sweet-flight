@@ -1,5 +1,6 @@
 package br.edu.ifsc.sweetflight.ui;
 
+import java.util.List;
 import java.util.Locale;
 import java.math.BigDecimal;
 import br.edu.ifsc.sweetflight.model.Venda;
@@ -39,6 +40,8 @@ public class MenuConsole {
         System.out.println("1 - Cadastrar voo");
         System.out.println("2 - Cadastrar passageiro");
         System.out.println("3 - Registrar venda");
+        System.out.println("4 - Consultar vendas por voo");
+        System.out.println("5 - Consultar vendas por passageiro");
         System.out.println("0 - Encerrar");
     }
 
@@ -47,6 +50,9 @@ public class MenuConsole {
             case "1" -> cadastrarVoo();
             case "2" -> cadastrarPassageiro();
             case "3" -> registrarVenda();
+            case "4" -> exibirVendas(central.consultarPorVoo(leitor.lerTexto("Código do voo")));
+            case "5" -> exibirVendas(central.consultarPorPassageiro(
+                    leitor.lerTexto("Código do passageiro")));
             case "0" -> { }
             default -> System.out.println("Opção inválida.");
         }
@@ -89,5 +95,14 @@ public class MenuConsole {
 
     private String formatarValor(BigDecimal valor) {
         return String.format(Locale.forLanguageTag("pt-BR"), "R$ %,.2f", valor);
+    }
+
+    private void exibirVendas(List<Venda> vendas) {
+        if (vendas.isEmpty()) {
+            System.out.println("Nenhuma venda encontrada.");
+        }
+        for (Venda venda : vendas) {
+            exibirVenda(venda);
+        }
     }
 }
