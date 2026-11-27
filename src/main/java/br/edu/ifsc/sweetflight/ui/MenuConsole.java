@@ -1,5 +1,7 @@
 package br.edu.ifsc.sweetflight.ui;
 
+import br.edu.ifsc.sweetflight.service.ResumoVoo;
+import br.edu.ifsc.sweetflight.model.Voo;
 import java.util.List;
 import java.util.Locale;
 import java.math.BigDecimal;
@@ -43,6 +45,7 @@ public class MenuConsole {
         System.out.println("4 - Consultar vendas por voo");
         System.out.println("5 - Consultar vendas por passageiro");
         System.out.println("6 - Cancelar venda");
+        System.out.println("7 - Resumo por voo");
         System.out.println("0 - Encerrar");
     }
 
@@ -55,6 +58,7 @@ public class MenuConsole {
             case "5" -> exibirVendas(central.consultarPorPassageiro(
                     leitor.lerTexto("Código do passageiro")));
             case "6" -> cancelarVenda();
+            case "7" -> exibirResumo();
             case "0" -> { }
             default -> System.out.println("Opção inválida.");
         }
@@ -112,5 +116,16 @@ public class MenuConsole {
         Venda venda = central.cancelarVenda(leitor.lerTexto("Código da venda"));
         System.out.println("Venda cancelada e vaga liberada:");
         exibirVenda(venda);
+    }
+
+    private void exibirResumo() {
+        ResumoVoo resumo = central.resumirVoo(leitor.lerTexto("Código do voo"));
+        Voo voo = resumo.voo();
+        System.out.println("Voo " + voo.getCodigo() + " | " + voo.getOrigem() + " -> "
+                + voo.getDestino() + " | " + voo.getPartida().format(LeitorEntrada.FORMATO_DATA));
+        System.out.println("Assentos ocupados: " + resumo.assentosOcupados());
+        System.out.println("Assentos disponíveis: " + resumo.assentosDisponiveis());
+        System.out.println("Total de vendas confirmadas: "
+                + formatarValor(resumo.totalConfirmado()));
     }
 }
