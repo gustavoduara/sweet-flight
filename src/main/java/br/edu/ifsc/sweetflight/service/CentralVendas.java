@@ -103,6 +103,18 @@ public class CentralVendas {
         return resultado;
     }
 
+    // O total é recalculado a partir do histórico, então venda cancelada não entra na soma.
+    public ResumoVoo resumirVoo(String codigoVoo) {
+        Voo voo = buscarVoo(codigoVoo);
+        BigDecimal total = new BigDecimal("0.00");
+        for (Venda venda : consultarPorVoo(codigoVoo)) {
+            if (venda.isConfirmada()) {
+                total = total.add(venda.getValor());
+            }
+        }
+        return new ResumoVoo(voo, voo.getAssentosOcupados(), voo.getAssentosDisponiveis(), total);
+    }
+
     public Voo buscarVoo(String codigo) {
         String chave = normalizarCodigo(codigo);
         Voo voo = voos.get(chave);
