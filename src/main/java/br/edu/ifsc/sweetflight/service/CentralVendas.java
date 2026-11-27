@@ -1,5 +1,7 @@
 package br.edu.ifsc.sweetflight.service;
 
+import java.util.List;
+import java.util.ArrayList;
 import br.edu.ifsc.sweetflight.model.Venda;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
@@ -64,6 +66,28 @@ public class CentralVendas {
         Venda venda = new Venda(codigo, voo, passageiro);
         vendas.put(codigo, venda);
         return venda;
+    }
+
+    public List<Venda> consultarPorVoo(String codigoVoo) {
+        Voo voo = buscarVoo(codigoVoo);
+        List<Venda> resultado = new ArrayList<>();
+        for (Venda venda : vendas.values()) {
+            if (venda.getVoo() == voo) {
+                resultado.add(venda);
+            }
+        }
+        return resultado;
+    }
+
+    public List<Venda> consultarPorPassageiro(String codigoPassageiro) {
+        Passageiro passageiro = buscarPassageiro(codigoPassageiro);
+        List<Venda> resultado = new ArrayList<>();
+        for (Venda venda : vendas.values()) {
+            if (venda.getPassageiro() == passageiro) {
+                resultado.add(venda);
+            }
+        }
+        return resultado;
     }
 
     public Voo buscarVoo(String codigo) {
